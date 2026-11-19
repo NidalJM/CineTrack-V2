@@ -1,4 +1,4 @@
-import { fetchCatalog } from "./api.js";
+import { getContents } from "./api.js";
 import { createCard, openModal, closeModal, renderFavorites } from "./dom.js";
 
 let allItems = [];
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const favoriteSidebar = document.getElementById('favoriteSidebar');
     const openFavBtn = document.getElementById('openFavBtn');
     try {
-        allItems = await fetchCatalog()
+        allItems = await getContents()
         filteredMedia = [...allItems]
     } catch (error) {
         grid.innerHTML = `<div class="col-span-full text-center text-red-500 font-bold py-10">
