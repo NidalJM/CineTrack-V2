@@ -73,6 +73,30 @@ export function openModal(item) {
 
     <p class="text-gray-300 text-sm leading-relaxed border-t border-gray-700 pt-3">${item.description}</p>
 </div>
+        <div class="w-full p-6 border-t border-gray-800 bg-gray-900/70 space-y-5">
+            <h3 class="text-2xl font-bebas tracking-wider text-red-500">Commentaires</h3>
+            <form id="commentForm" class="space-y-3 bd-gray-800/70 p-4 rounded-xl border border-gray-700">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+                    <input type="text" id="commentAuthor" value="${savedPseudo}" placeholder="Votre nom/pseudo *"
+                        class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:border-red-500 focus:outline-none">
+                </div>
+                <div>
+                    <textarea id="commentText" rows="2" placeholder="Ecriver votre commentaire... *"
+                        class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:border-red-500 focus:outline-none"></textarea>
+                </div>
+                <p id="commentError" class="text-red-400 text-xs hidden"></p>
+                <div class="flex justify-end">
+                    <button type="submit" id="commentSubmitBtn"
+                        class="bg-red-600 hover:bg-red-500 text-white text-xs font-bolld px-4 py-2 rounded-lg transision-all">
+                        Publier
+                    </button>
+                </div>
+            </form>
+            <div id="commentsLoader" class="text-center text-gray-400 text-sm py-3">Chargement des commentaires...</div>
+            <div id="commentsList" class="space-y-3"></div>
+        </div>
+
     `
 
     modal.classList.remove('hidden');
@@ -126,8 +150,30 @@ export function showFieldErrors(errors = {}) {
             errEl.textContent = errors[field];
             errEl.classList.remove("hidden");
         } else {
-            errEl.textContent="";
+            errEl.textContent = "";
             errEl.classList.add("hidden");
         }
     });
+}
+
+export function renderComments(comments) { 
+    const listEl = document.getElementById('commentsList');
+    if (!listEl) return;
+
+    if (comments.length === 0)  {
+        listEl.innerHTML = `<p class= "text-gray-500 text-sm text-center py-4">Aucun commentaire.</p>`;
+        return;
+    }
+    listEl.innerHTML = comments.map(e => {
+        const dateStr = e.createdAt? new Date(e.createAt).toLocaleDateString('fr-FR'):"";
+        return `
+            <div class="bg-gray-800 border border-gray-700/70 rounded-xl p-3.5 space-y-1">
+                <div class= "flex items-center justify-between">
+                    <span class="font-bold text-sm text-white">${e.author}</span>
+                    <span class="text-xs text-gray-400">${dateStr}</span>
+                </div>
+                <p class="text-gray-300 text-sm">${e.text}</p>
+            </div>
+        `
+    }).join('');
 }
