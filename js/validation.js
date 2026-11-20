@@ -11,6 +11,11 @@ export function validateContent(data) {
     }
 
     const year = Number(data.releaseYear);
+    const currentYear = new Date().getFullYear();
+    if (!year || year > currentYear)    {
+        errors.releaseYear = `Annee valide requise`;
+        isValid = false;
+    }
 
     try {
         new URL(data.image);

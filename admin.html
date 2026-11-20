@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CineTrack-Admin</title>
+    <title>CineTrack-Catalogue</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;500;600;700&display=swap"
@@ -22,7 +22,7 @@
             }
         }
     </script>
-    <script src="/js/ad"></script>
+    <script src="/js/admin.js" type="module"></script>
 </head>
 
 <body class="bg-gray-950 text-white font-poppins min-h-screen">
@@ -34,7 +34,7 @@
             </a>
             <a href="admin.html"
                 class="text-gray-300 hover:text-red-500 font-poppins text-sm sm:text-base transition-all">
-                Admin
+                Catalogue
             </a>
         </div>
 
@@ -53,12 +53,12 @@
         <section class="bg-gray-900 border border-gray-800 rounded-2xl p-6 sm:p-8 shadow-xl">
             <div class="flex items-center justify-between border-b border-gray-800 pb-4 mb-6">
                 <h1 id="formTitle" class="text-3xl font-bebas tracking-wider text-red-500">Ajouter un titre</h1>
-                <button id="cancelEditBtn" type="button" class="text-sm text-gray-400 hover:text-white underline">
+                <button id="cancelEditBtn" type="button" class="text-sm text-gray-400 hover:text-white underline hidden">
                     Annuler la modification
                 </button>
             </div>
 
-            <form id="contentForm" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <form id="contentForm" class="grid grid-cols-1 md:grid-cols-2 gap-5" novalidate>
                 <div>
                     <label for="title" class="block text-sm font-semibold mb-1">Titre *</label>
                     <input type="text" id="title" placeholder="Ex: Inception"
@@ -77,6 +77,11 @@
                     <p id="err-type" class="text-red-400 text-sm mt-1 hidden"></p>
                 </div>
 
+                <div>
+                    <label for="releaseYear" class="block text-sm font-semibold mb-1">Anne de sortie *</label>
+                    <input type="number" id="releaseYear" placeholder="Ex: 2010" class="w-full bg-gray-800 border border-gray-700 rounded-xl p-3 text-white focus:border-red-500 focus:outline-none">
+                    <p id="err-releaseYear" class="text-red-400 text-sm mt-1 hidden"></p>
+                </div>
                 <div id="durationGroup">
                     <label for="duration" class="block text-sm font-semibold mb-1">Duree (minutes) *</label>
                     <input type="number" id="duration" placeholder="Ex: 148"
@@ -85,7 +90,7 @@
 
                 </div>
 
-                <div id="seasonsGroup">
+                <div id="seasonsGroup" class="hidden">
                     <label for="seasons" class="block text-sm font-semibold mb-1">Nombre de saisons *</label>
                     <input type="number" id="seasons" placeholder="Ex: 4"
                         class="w-full bg-gray-800 border border-gray-700 rounded-xl p-3 text-white focus:border-red-500 focus:outline-none">
@@ -118,7 +123,7 @@
                 </div>
 
                 <div class="md:col-span-2">
-                    <label for="productionCountries" class="block text-sm font-semibold mb-1">Genres *</label>
+                    <label for="productionCountries" class="block text-sm font-semibold mb-1">Pays de production. *</label>
                     <input type="text" id="productionCountries" placeholder="Ex: USA, UK"
                         class="w-full bg-gray-800 border border-gray-700 rounded-xl p-3 text-white focus:border-red-500 focus:outline-none">
                     <!-- <p id="err-genres" class="text-red-400 text-sm mt-1 hidden"></p> -->
