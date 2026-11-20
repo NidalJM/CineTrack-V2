@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineTrack-Catalogue</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        bebas: ['Bebas Neue', 'sans-serif'],
+                        poppins: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="/js/admin.js" type="module"></script>
+</head>
+
+<body class="bg-gray-950 text-white font-poppins min-h-screen">
+    <header class="bg-gray-800 border-b border-gray-700 p-5 px-6 sm:px-10 flex items-center justify-between">
+        <div class="flex items-center gap-6">
+            <a href="index.html">
+                <span
+                    class="text-lg sm:text-4xl text-red-500 font-bold font-bebas font-bold tracking-wider">CineTrack</span>
+            </a>
+            <a href="index.html"
+                class="text-gray-300 hover:text-red-500 font-poppins text-sm sm:text-base transition-all">
+                Catalogue
+            </a>
+        </div>
+
+    </header>
+
+    <main class="max-w-6xl mx-auto p-6 sm:p-10 space-y-10">
+        <div id="statusMessage" class="hidden p-4 rounded-xl font-semibold text-sm"></div>
+        <section class="bg-gray-900 border border-gray-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+            <div class="flex items-center justify-between border-b border-gray-800 pb-4 mb-6">
+                <h1 id="formTitle" class="text-3xl font-bebas tracking-wider text-red-500">Ajouter un titre</h1>
+                <button id="cancelEditBtn" type="button" class="text-sm text-gray-400 hover:text-white underline hidden">
+                    Annuler la modification
+                </button>
+            </div>
+
+            <form id="contentForm" class="grid grid-cols-1 md:grid-cols-2 gap-5" novalidate>
+                <div>
+                    <label for="title" class="block text-sm font-semibold mb-1">Titre *</label>
+                    <input type="text" id="title" placeholder="Ex: Inception"
+                        class="w-full bg-gray-800 border border-gray-700 rounded-xl p-3 text-white focus:border-red-500 focus:outline-none">
+                    <p id="err-title" class="text-red-400 text-sm mt-1 hidden"></p>
+                </div>
+
+                <div>
+                    <label for="type" class="block text-sm font-semibold mb-1">Type *</label>
+                    <select id="type"
+                        class="w-full bg-gray-800 border border-gray-700 rounded-xl p-3 text-white focus:outline-none">
+                        <option value="">-- Choisir un type ---</option>
+                        <option value="movie">Film</option>
+                        <option value="series">Serie</option>
+                    </select>
+                    <p id="err-type" class="text-red-400 text-sm mt-1 hidden"></p>
+                </div>
+
+                <div>
+                    <label for="releaseYear" class="block text-sm font-semibold mb-1">Anne de sortie *</label>
+                    <input type="number" id="releaseYear" placeholder="Ex: 2010" class="w-full bg-gray-800 border border-gray-700 rounded-xl p-3 text-white focus:border-red-500 focus:outline-none">
+                    <p id="err-releaseYear" class="text-red-400 text-sm mt-1 hidden"></p>
+                </div>
+                <div id="durationGroup">
+                    <label for="duration" class="block text-sm font-semibold mb-1">Duree (minutes) *</label>
+                    <input type="number" id="duration" placeholder="Ex: 148"
+                        class="w-full bg-gray-800 border border-gray-700 rounded-xl p-3 text-white focus:border-red-500 focus:outline-none">
+                    <p id="err-duration" class="text-red-400 text-sm mt-1 hidden"></p>
+
+                </div>
+
+                <div id="seasonsGroup" class="hidden">
+                    <label for="seasons" class="block text-sm font-semibold mb-1">Nombre de saisons *</label>
+                    <input type="number" id="seasons" placeholder="Ex: 4"
+                        class="w-full bg-gray-800 border border-gray-700 rounded-xl p-3 text-white focus:border-red-500 focus:outline-none">
+                    <p id="err-seasons" class="text-red-400 text-sm mt-1 hidden"></p>
+                </div>
+
+                <div class="md:col-span-2 grid-cols-1 sm:grid-cols-[1fr-auto] gap-4 items-start">
+                    <div>
+                        <label for="image" class="block text-sm font-semibold mb-1">URL de l'affichage *</label>
+                        <input type="url" id="image" placeholder="https://..."
+                            class="w-full bg-gray-800 border border-gray-700 rounded-xl p-3 text-white focus:border-red-500 focus:outline-none">
+                        <p id="err-image" class="text-red-400 text-sm mt-1 hidden"></p>
+                    </div>
+                    <img id="imagePreview" src="" alt="Apercu"
+                        class="hidden mt-2 w-20 h-28 object-cover rounded-lg border border-gray-700">
+                </div>
+
+                <div>
+                    <label for="genres" class="block text-sm font-semibold mb-1">Genres *</label>
+                    <input type="text" id="genres" placeholder="Ex: Action, Thriller"
+                        class="w-full bg-gray-800 border border-gray-700 rounded-xl p-3 text-white focus:border-red-500 focus:outline-none">
+                    <!-- <p id="err-genres" class="text-red-400 text-sm mt-1 hidden"></p> -->
+                </div>
+
+                <div>
+                    <label for="directors" class="block text-sm font-semibold mb-1">Directors *</label>
+                    <input type="text" id="directors" placeholder="Ex: Christopher Nolan"
+                        class="w-full bg-gray-800 border border-gray-700 rounded-xl p-3 text-white focus:border-red-500 focus:outline-none">
+                    <!-- <p id="err-genres" class="text-red-400 text-sm mt-1 hidden"></p> -->
+                </div>
+
+                <div class="md:col-span-2">
+                    <label for="productionCountries" class="block text-sm font-semibold mb-1">Pays de production. *</label>
+                    <input type="text" id="productionCountries" placeholder="Ex: USA, UK"
+                        class="w-full bg-gray-800 border border-gray-700 rounded-xl p-3 text-white focus:border-red-500 focus:outline-none">
+                    <!-- <p id="err-genres" class="text-red-400 text-sm mt-1 hidden"></p> -->
+                </div>
+
+                <div class="md:col-span-2">
+                    <label for="description" class="block text-sm font-semibold mb-1">Description *</label>
+                    <input type="text" id="description" placeholder="Resume du film ou de la serie..."
+                        class="w-full bg-gray-800 border border-gray-700 rounded-xl p-3 text-white focus:border-red-500 focus:outline-none">
+                    <!-- <p id="err-genres" class="text-red-400 text-sm mt-1 hidden"></p> -->
+                </div>
+
+                <div class="md:col-span-2 flex justify-end">
+                    <button id="submitBtn" type="submit"
+                        class="bg-red-600 hover:bg-red-500 text-white font-bold px-6 py-3 rounded-xl transision-all">Ajouter</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="bg-gray-900 border border-gray-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-3xl font-bebas tracking-wider text-red-500">Gestion du Catalogue</h2>
+                <span id="totalCount" class="text-sm text-gray-400"></span>
+            </div>
+
+            <div id="tableLoader" class="text-center text-gray-400 py-8 font-semibold">Chargement...</div>
+            <div class="overflow-x-auto">
+                <table id="adminTable" class="w-full text-left border-collapse hidden">
+                    <thead class="hidden md:table-header-group">
+                        <tr class="border-b border-gray-800 text-gray-400 text-xs uppercase">
+                            <th class="py-3 px-4">Image</th>
+                            <th class="py-3 px-4">Titre</th>
+                            <th class="py-3 px-4">Type</th>
+                            <th class="py-3 px-4">Anne</th>
+                            <th class="py-3 px-4 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminTableBody" class="divide-y divide-gray-800 text-sm"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</body>
+
+</html>
