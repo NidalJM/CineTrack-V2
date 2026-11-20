@@ -162,7 +162,7 @@ export function showFieldErrors(errors = {}) {
             errEl.textContent = errors[field];
             errEl.classList.remove("hidden");
         } else {
-            errEl.textContent="";
+            errEl.textContent = "";
             errEl.classList.add("hidden");
         }
     });
