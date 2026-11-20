@@ -84,3 +84,50 @@ export function closeModal() {
     modal.classList.add('hidden');
     modal.classList.remove('flex')
 }
+
+export function renderAdminTable(list, tbody) {
+    if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center text-gray-500 py-8">Aucun titre disponible.</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = list.map(item => `
+        <tr class="hover:bg-gray-800/60 transition-all">
+            <td class= "py-3 px-4">
+                <img src="${item.image}" alt="${item.title}" class="w-12 h-16 object-cover rounded-lg bg-gray-800">
+            </td>
+            <td class="py-3 px-4 font-semibold text-white">${item.title}</td>
+            <td class="py-3 px-4">
+                <span class="uppercase text-xs px-3 py-1 rounded bg-red-500/20 text-red-400 font-bold">${item.type}</span>
+            </td>
+            <td class="py-3 px-4 text-gray-300">${item.releaseYear}</td>
+            <td class="py-3 px-4 text-right space-x-2">
+                <button data-id="${item.id}" type="button" class="edit-btn bg-amber-500/20 hover:bg-amber-500 text-amber-400 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold">Modifier</button>
+                <button data-id="${item.id}" type="button" class="delete-btn bg-red-500/20 hover:bg-red-600 text-red-400 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold">Supprimer</button>
+            </td>
+        <tr>
+        `).join('');
+}
+
+export function showStatus(el, msg, isError = false) {
+    el.textContent = msg;
+    el.className = `p-4 rounded-xl font-semibold text-sm border ${isError ? "bg-red-500/20 text-red-400 border-red-500/40" : "bg-green-500/20 text-green-400 border-green-500/40"
+        }`;
+    setTimeout(() => el.classList.add("hidden"), 4000);
+}
+
+export function showFieldErrors(errors = {}) {
+    const fields = ["title", "type", "releaseYear", "image", "duration", "seasons"];
+    fields.forEach(field => {
+        const errEl = document.getElementById(`err-${field}`);
+        if (!errEl) return;
+
+        if (errors[field]) {
+            errEl.textContent = errors[field];
+            errEl.classList.remove("hidden");
+        } else {
+            errEl.textContent="";
+            errEl.classList.add("hidden");
+        }
+    });
+}
