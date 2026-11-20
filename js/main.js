@@ -1,5 +1,5 @@
-import { getContents } from "./api.js";
-import { createCard, openModal, closeModal, renderFavorites } from "./dom.js";
+import { getContents, getComments, createComment } from "./api.js";
+import { createCard, openModal, closeModal, renderFavorites, renderComments } from "./dom.js";
 
 let allItems = [];
 let filteredMedia = [];
@@ -90,6 +90,61 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
+    async function handleModalOpen(item) {
+        openModal(item);
+
+        const loader = document.getElementById('commentsLoader');
+        const form = document.getElementById('commentForm');
+        const authorInput = document.getElementById('commentAuthor');
+        const textInput = document.getElementById('commentText');
+        const errorEl = document.getElementById('commentError');
+        const submitBtn = document.getElementById('commentSubmitBtn');
+
+        let itemComments = [];
+
+        try {
+            const allComments = await getComments();
+            itemComments = allComments.filter(e => String(e.contentId) === String(item.id));
+            loader.classList.add('hidden');
+            renderComments(itemComments);
+        } catch {
+            loader.textContent = "Aucun commentaire.";
+        }
+        errorEl.classList.add('hidden');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const author = authorInput.value.trim();
+            const text = textInput.value.trim();
+            if (!author || !text) {
+                errorEl.textContent = "Veuillez remplir votre nom et votre commentaire.";
+                errorEl.classList.remove('hidden');
+                return;
+            }
+            errorEl.classList.add('hidden');
+
+            localStorage.setItem("cinetrack_pseudo", author);
+            submitBtn.disabled = true;
+
+            try {
+                const newComment = await createComment({
+                    contentId: String(item.id),
+                    author,
+                    text,
+                    createdAt: new Date().toISOString(),
+                });
+                itemComments = [newComment, ...itemComments];
+                renderComments(itemComments);
+                textInput.value = "";
+            } catch {
+                errorEl.textContent = "Erreur lors de l'envoi du commentaier.";
+                errorEl.classList.remove('hidden');
+            } finally {
+                submitBtn.disabled = false;
+            }
+        })
+
+    }
+
     btnNext.addEventListener('click', () => {
         if (currentPage < totalPages) {
             currentPage += 1;
@@ -118,8 +173,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!card) return;
 
         const id = card.dataset.id;
-        const item = allItems.find((i) => i.id === id)
-        if (item) openModal(item)
+        const item = allItems.find((i) =>String(i.id) === String(id))
+        if (item) handleModalOpen(item)
+            
     });
     favoriteList.addEventListener('click', (e) => {
         const removeBtn = e.target.closest('.remove-fav');
