@@ -1,53 +1,58 @@
-# CineTrack
+# CineTrack-V2
 
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![MockAPI](https://img.shields.io/badge/MockAPI-REST_API-009688?style=for-the-badge)
 ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
 
 ---
 
 ## Démo en Ligne
 
-[Lien Vercel](https://cinetrack-wheat.vercel.app)
+[Lien Vercel](https://cinetrack-v2-lilac.vercel.app)
 
 ---
 
 ## Planification de brief
 
-  [Planification](https://nidalbary.atlassian.net/jira/software/projects/CIN/boards/35?filter=&groupBy=none)
+[Planification Jira](https://nidalbary.atlassian.net/jira/software/projects/CV/boards/36?filter=&groupBy=none&atlOrigin=eyJpIjoiZmFkZTZmN2M0YWMzNGJkNmFmNjY2OTBmNjUwMjZiMzEiLCJwIjoiaiJ9)
 
 ---
 
-
 ## Présentation du Projet
 
-**CineTrack** est une application web moderne et responsive de gestion de catalogue de films et séries. Elle permet aux utilisateurs d'explorer un catalogue multimédia, de filtrer et rechercher des œuvres en temps réel, de consulter les fiches détaillées via une fenêtre modale et de gérer une liste personnalisée de favoris persistante.
+**CineTrack** est une application web moderne et responsive de gestion de catalogue de films et séries connectée à une API REST (**MockAPI**). Elle permet aux utilisateurs d'explorer un catalogue multimédia en ligne, de filtrer et rechercher des œuvres en temps réel, de consulter les fiches détaillées avec un espace de commentaires, de gérer leurs favoris et d'administrer le catalogue complet via une interface CRUD dédiée.
 
 ### Fonctionnalités Principales
 
-* **Catalogue Dynamique & Pagination** : Affichage des films et séries sous forme de cartes interactives avec navigation par pages (`Prev` / `Next`)
+* **Catalogue Dynamique & Pagination** : Affichage des films et séries récupérés depuis MockAPI sous forme de cartes interactives avec navigation par pages (`Prev` / `Next`).
 * **Recherche & Filtrage Instantané** : Barre de recherche par titre combinée à un filtre par catégorie (`Tous`, `Movies`, `Series`).
-* **Modale de Détails** : Aperçu complet au clic sur une carte (affiche, synopsis, année de sortie, durée ou nombre de saisons, genres, réalisateurs et pays de production).
-* **Système de Favoris Persistant** : Ajout et suppression de favoris sauvegardés dans le `localStorage`, accompagnés d'un compteur automatique de films et séries et d'un menu adaptatif (barre latérale fixe sur ordinateur, tiroir mobile sur téléphone).
+* **Modale de Détails & Commentaires** : Aperçu complet au clic sur une carte (affiche, synopsis, année de sortie, durée ou nombre de saisons, genres, réalisateurs, pays de production) accompagné d'un système de commentaires persistants via l'API (`GET` / `POST`) et sauvegarde automatique du pseudo dans le `localStorage`.
+* **Espace Administration (CRUD Complet)** : Page dédiée (`admin.html`) permettant d'ajouter (`POST`), modifier (`PUT`) et supprimer (`DELETE`) des films et séries avec validation complète du formulaire, aperçu d'image en direct et tableau responsive mobile-first.
+* **Système de Favoris Persistant** : Ajout et suppression de favoris sauvegardés dans le `localStorage`, avec compteur automatique de films et séries.
 
 ---
 
 ## Technologies
 
-* **HTML5** (Sémantique)
+* **HTML5** (Structure sémantique multi-pages : `index.html` & `admin.html`)
 * **Tailwind CSS** (Design responsive Mobile-First)
-* **JavaScript ES6+** (Modules ES, manipulation du DOM, `localStorage`)
-* **Git & GitHub / Vercel** (Gestion de versions et déploiement)
+* **JavaScript ES6+** (Modules ES, `fetch` / `async-await`, manipulation du DOM, validation de formulaires, `localStorage`)
+* **MockAPI** (Backend RESTful pour la persistance des données)
+* **Git & GitHub / Vercel** (Gestion de versions et déploiement continu)
 
 ---
 
 ## Structure des Fichiers
 
 ```text
-├── index.html          # Structure principale, barre de recherche, modale et menu favoris
-├── README.md           # Documentation du projet
+├── index.html          # Page principale : catalogue, recherche, filtres, modale avec commentaires et favoris
+├── admin.html          # Interface d'administration : formulaire ajout/modification et tableau CRUD
+├── README.md           # Documentation du projet et des endpoints API
 └── js/
-    ├── api.js          # Récupération et chargement des données du catalogue
-    ├── dom.js          # Génération dynamique des cartes, de la modale et des favoris
-    └── main.js         # Point d'entrée, gestion des événements, de l'état global et du localStorage
+    ├── api.js          # Centralisation des appels HTTP (GET, POST, PUT, DELETE) vers MockAPI
+    ├── dom.js          # Génération dynamique du DOM (cartes, modale, commentaires, tableau admin, alertes)
+    ├── validation.js   # Validation des champs du formulaire d'administration
+    ├── main.js         # Logique du catalogue, filtres, pagination, favoris et gestion des commentaires
+    └── admin.js        # Logique CRUD de la page d'administration
